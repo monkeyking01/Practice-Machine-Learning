@@ -4,14 +4,6 @@
 #date: "10/21/2019"
 
 ---
-library(caret)
-library(rpart)
-library(rpart.plot)
-library(RColorBrewer)
-library(rattle)
-library(randomForest)
-library(e1071)
-library(gbm)
 
 #The goal of this project is to predict the manner in which people did the exercise.
 
@@ -22,6 +14,14 @@ library(gbm)
 
 ### Read data   
 ```{r}
+library(caret)
+library(rpart) 
+library(rpart.plot) 
+library(RColorBrewer) 
+library(rattle) 
+library(randomForest) 
+library(e1071) 
+library(gbm)
 
 set.seed(12345)
 training <- read.csv("https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv", stringsAsFactors=FALSE, na.strings=c("#DIV/0!"))
@@ -54,10 +54,12 @@ qplot(newtraining$classe, col='blue', xlab='classe', ylab='freq', )
 #I will use three model algorithems(random forest decistion tree, Stochastic gradient boosting trees (gbm) and Decision trees with CART (rpart)) to predict the outcome variable and find the best solution. 
 
 ```{r}
-## model1: class decision tree(rpart)
+# model1: class decision tree(rpart)
 
+library(rpart)
 modrpt <- rpart(classe ~., method = "class", data = newtraining)
 predrpt <- predict(modrpt, newtraining[-length(newtraining)], type='class')
+
 confusionMatrix(predrpt, newtraining$classe)
 
 newtesting$classe<- as.factor(newtesting$classe)
@@ -65,6 +67,7 @@ predrpt2 <- predict(modrpt, newtesting, type='class')
 confusionMatrix(predrpt2, newtesting$classe)
 
 # the overall accuracy to predict the testing data is 0.7368
+
 
 # model 2: gbm
 set.seed(12345)
@@ -74,10 +77,11 @@ fitControl <- trainControl(method = "repeatedcv",
 gbmpred <- train(classe ~ ., data=newtraining, method = "gbm",
                  trControl = fitControl,
                  verbose = FALSE)
+gbmfinMod <- gbmpred$finalModel
 gbmpred2 <- predict(gbmpred, newdata=newtesting)
 confusionMatrix(gbmpred2, newtesting$classe)
 
-##model3: ramdom forest decison tree
+#model3: ramdom forest decison tree
 modrf <- train(classe ~., method = "rf", data = newtraining, verbose = TRUE, trControl = trainControl(method="cv"), number = 3)
 
 predrf <- predict(modrf, newtraining[-length(newtraining)])
