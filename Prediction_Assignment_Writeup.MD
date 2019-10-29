@@ -9,7 +9,7 @@
 
 #The data for this project come from this source: http://groupware.les.inf.puc-rio.br/har.
 
-## Pre-processing Data
+### Pre-processing Data
 #Several columns of the raw data set have string contaning nothing, so we delete those columns first, and we also delete the first 7 columns. These features are obviously not related to predict the outcome.
 
 ### Read data   
