@@ -16,9 +16,7 @@
 ```{r}
 library(caret)
 library(rpart) 
-library(rpart.plot) 
 library(RColorBrewer) 
-library(rattle) 
 library(randomForest) 
 library(e1071) 
 library(gbm)
